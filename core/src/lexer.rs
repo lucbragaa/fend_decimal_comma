@@ -103,7 +103,7 @@ fn parse_fixed_char(input: &str, ch: char) -> Result<((), &str), FendError> {
 
 fn parse_digit_separator(input: &str) -> Result<((), &str), FendError> {
     let (parsed_ch, input) = parse_char(input)?;
-    if parsed_ch == '_' || parsed_ch == ',' {
+    if parsed_ch == '_' || parsed_ch == '.' {
         Ok(((), input))
     } else {
         Err(FendError::ExpectedDigitSeparator(parsed_ch))
@@ -247,7 +247,7 @@ fn parse_basic_number<'a, I: Interrupt>(
     let base_as_u64 = u64::from(base.base_as_u8());
     let mut is_integer = true;
 
-    if parse_fixed_char(input, '.').is_err() && !is_dice_with_no_count {
+    if parse_fixed_char(input, ',').is_err() && !is_dice_with_no_count {
         let (_, remaining) =
             parse_integer(input, true, base, &mut |digit| -> Result<(), FendError> {
                 res = res
@@ -260,7 +260,7 @@ fn parse_basic_number<'a, I: Interrupt>(
     }
 
     // parse decimal point and at least one digit
-    if let Ok((_, remaining)) = parse_fixed_char(input, '.') {
+    if let Ok((_, remaining)) = parse_fixed_char(input, ',') {
         is_integer = false;
         let mut num_nonrec_digits = 0;
         let mut numerator = Number::zero_with_base(base);
