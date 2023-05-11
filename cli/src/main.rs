@@ -53,9 +53,9 @@ fn eval_and_print_res(
             }
             if print_res {
                 let string_result = if config.enable_colors {
-                    print_spans(result, config)
+                    print_spans(result, config).replace(".", ",")
                 } else {
-                    res.get_main_result().to_string()
+                    res.get_main_result().to_string().replace(".", ",")
                 };
                 if res.has_trailing_newline() {
                     println!("{string_result}");
@@ -222,7 +222,7 @@ fn real_main() -> ExitCode {
                     return ExitCode::FAILURE;
                 }
             }
-            return eval_exprs(&[input]);
+            return eval_exprs(&[input])
         }
     }
     ExitCode::SUCCESS
